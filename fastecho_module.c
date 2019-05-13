@@ -9,12 +9,13 @@
 #include <linux/signal.h>
 #include <linux/tcp.h>
 #include <linux/types.h>
+#include <linux/workqueue.h>
 #include <net/sock.h>
-
 #include "fastecho.h"
 
 #define DEFAULT_PORT 12345
 #define DEFAULT_BACKLOG 128
+#define WORKQUEUE_NAME "echo workqueue"
 
 MODULE_LICENSE("Dual MIT/GPL");
 MODULE_AUTHOR("National Cheng Kung University, Taiwan");
@@ -25,11 +26,11 @@ static ushort port = DEFAULT_PORT;
 static ushort backlog = DEFAULT_BACKLOG;
 module_param(port, ushort, S_IRUGO);
 module_param(backlog, ushort, S_IRUGO);
+static struct workqueue_struct *echo_wq;
 
 struct echo_server_param param;
 struct socket *listen_sock;
 struct task_struct *echo_server;
-
 static int open_listen(struct socket **);
 static void close_listen(struct socket *);
 
@@ -41,7 +42,14 @@ static int fastecho_init_module(void)
         return error;
     }
 
+    echo_wq = alloc_workqueue(WORKQUEUE_NAME, 0, 0);
+    if (!echo_wq) {
+        printk(KERN_ERR MODULE_NAME ": error creating workqueue");
+        return -1;
+    }
+
     param.listen_sock = listen_sock;
+    param.wq = echo_wq;
 
     echo_server = kthread_run(echo_server_daemon, &param, MODULE_NAME);
     if (IS_ERR(echo_server)) {
@@ -57,6 +65,10 @@ static void fastecho_cleanup_module(void)
     send_sig(SIGTERM, echo_server, 1);
     kthread_stop(echo_server);
     close_listen(listen_sock);
+    if (echo_wq) {
+        flush_workqueue(echo_wq);
+        destroy_workqueue(echo_wq);
+    }
 }
 
 static int open_listen(struct socket **result)

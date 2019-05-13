@@ -1,8 +1,11 @@
 #include <linux/kernel.h>
 #include <linux/kthread.h>
 #include <linux/sched/signal.h>
+#include <linux/string.h>
 #include <linux/tcp.h>
+#include <linux/workqueue.h>
 
+#include "echo_server.h"
 #include "fastecho.h"
 
 #define BUF_SIZE 4096
@@ -73,6 +76,7 @@ static int echo_server_worker(void *arg)
     }
 
     while (!kthread_should_stop()) {
+        memset(buf, 0, BUF_SIZE);
         res = get_request(sock, buf, BUF_SIZE - 1);
         if (res <= 0) {
             if (res) {
@@ -98,9 +102,17 @@ static int echo_server_worker(void *arg)
     return 0;
 }
 
+static void echo_server_worker_wq(struct work_struct *wk)
+{
+    struct echo_server_param *param =
+        container_of(wk, struct echo_server_param, work);
+    echo_server_worker(param);
+}
+
 int echo_server_daemon(void *arg)
 {
     struct echo_server_param *param = arg;
+    struct workqueue_struct *wq;
     struct socket *sock;
     struct task_struct *thread;
     int error;
@@ -117,7 +129,6 @@ int echo_server_daemon(void *arg)
             printk(KERN_ERR MODULE_NAME ": socket accept error = %d\n", error);
             continue;
         }
-
         /* start server worker */
         thread = kthread_run(echo_server_worker, sock, MODULE_NAME);
         if (IS_ERR(thread)) {

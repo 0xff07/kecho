@@ -1,0 +1,51 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUF_SIZE	echo_server.c	11;"	d	file:
+BUILD_DIR	Makefile	/^BUILD_DIR := $(shell pwd)$/;"	m
+DEFAULT_BACKLOG	fastecho_module.c	17;"	d	file:
+DEFAULT_PORT	fastecho_module.c	16;"	d	file:
+ECHO_SERVER_H	echo_server.h	2;"	d
+FASTEST_ECHO_H	fastecho.h	2;"	d
+GIT_HOOKS	Makefile	/^GIT_HOOKS := .git\/hooks\/applied$/;"	m
+KERNEL_DIR	Makefile	/^KERNEL_DIR = \/home\/f\/Workspace\/buildroot-qemu-x86-linux\/output\/build\/linux-5.0.10$/;"	m
+MODULE_NAME	fastecho.h	6;"	d
+SRCS	Makefile	/^SRCS = fastecho_module.c echo_server.c$/;"	m
+VERBOSE	Makefile	/^VERBOSE   := 1$/;"	m
+WORKQUEUE_NAME	fastecho_module.c	18;"	d	file:
+add_warning	scripts/commit-msg.hook	/^add_warning() {$/;"	f
+backlog	fastecho_module.c	/^static ushort backlog = DEFAULT_BACKLOG;$/;"	v	file:
+close_listen	fastecho_module.c	/^static void close_listen(struct socket *sock)$/;"	f	file:
+connect_socket	echo_server.h	/^    struct *socket connect_socket;$/;"	m	struct:echo_server_work	typeref:struct:echo_server_work::socket
+display_warnings	scripts/commit-msg.hook	/^display_warnings() {$/;"	f
+echo_server	fastecho_module.c	/^struct task_struct *echo_server;$/;"	v	typeref:struct:task_struct
+echo_server_daemon	echo_server.c	/^int echo_server_daemon(void *arg)$/;"	f
+echo_server_param	echo_server.h	/^struct echo_server_param {$/;"	s
+echo_server_work	echo_server.h	/^struct echo_server_work {$/;"	s
+echo_server_worker	echo_server.c	/^static int echo_server_worker(void *arg)$/;"	f	file:
+echo_server_worker_wq	echo_server.c	/^static void echo_server_worker_wq (struct work_struct *wk) {$/;"	f	file:
+echo_wq	fastecho_module.c	/^static struct workqueue_struct *echo_wq;$/;"	v	typeref:struct:workqueue_struct	file:
+fastecho-objs	Makefile	/^fastecho-objs := $(SRCS:.c=.o)$/;"	m
+fastecho_cleanup_module	fastecho_module.c	/^module_exit(fastecho_cleanup_module);$/;"	v
+fastecho_cleanup_module	fastecho_module.c	/^static void fastecho_cleanup_module(void)$/;"	f	file:
+fastecho_init_module	fastecho_module.c	/^module_init(fastecho_init_module);$/;"	v
+fastecho_init_module	fastecho_module.c	/^static int fastecho_init_module(void)$/;"	f	file:
+get_request	echo_server.c	/^static int get_request(struct socket *sock, unsigned char *buf, size_t size)$/;"	f	file:
+listen_sock	echo_server.h	/^    struct socket *listen_sock;$/;"	m	struct:echo_server_param	typeref:struct:echo_server_param::socket
+listen_sock	fastecho_module.c	/^struct socket *listen_sock;$/;"	v	typeref:struct:socket
+obj-m	Makefile	/^obj-m := fastecho.o$/;"	m
+open_listen	fastecho_module.c	/^static int open_listen(struct socket **result)$/;"	f	file:
+param	fastecho_module.c	/^struct echo_server_param param;$/;"	v	typeref:struct:echo_server_param
+port	fastecho_module.c	/^static ushort port = DEFAULT_PORT;$/;"	v	file:
+prompt_help	scripts/commit-msg.hook	/^prompt_help() {$/;"	f
+read_commit_message	scripts/commit-msg.hook	/^read_commit_message() {$/;"	f
+send_request	echo_server.c	/^static int send_request(struct socket *sock, unsigned char *buf, size_t size)$/;"	f	file:
+set_colors	scripts/commit-msg.hook	/^set_colors() {$/;"	f
+set_editor	scripts/commit-msg.hook	/^set_editor() {$/;"	f
+validate_commit_message	scripts/commit-msg.hook	/^validate_commit_message() {$/;"	f
+work	echo_server.h	/^    struct work_struct work;$/;"	m	struct:echo_server_param	typeref:struct:echo_server_param::work_struct
+work	echo_server.h	/^    struct work_struct work;$/;"	m	struct:echo_server_work	typeref:struct:echo_server_work::work_struct
+wq	echo_server.h	/^    struct workqueue_struct *wq;$/;"	m	struct:echo_server_param	typeref:struct:echo_server_param::workqueue_struct
