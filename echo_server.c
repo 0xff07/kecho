@@ -120,15 +120,17 @@ int echo_server_daemon(void *arg)
     allow_signal(SIGKILL);
     allow_signal(SIGTERM);
 
+    struct echo_server_work server_work;
     while (!kthread_should_stop()) {
         /* using blocking I/O */
-        error = kernel_accept(param->listen_sock, &sock, 0);
+        error = kernel_accept(param->listen_sock, &server_work.connect_sock, 0);
         if (error < 0) {
             if (signal_pending(current))
                 break;
             printk(KERN_ERR MODULE_NAME ": socket accept error = %d\n", error);
             continue;
         }
+        sock = server_work.connect_sock;
         /* start server worker */
         thread = kthread_run(echo_server_worker, sock, MODULE_NAME);
         if (IS_ERR(thread)) {
